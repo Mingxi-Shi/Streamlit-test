@@ -1,1 +1,2 @@
-web: sh setup.sh && streamlit run streamlit_app.py
+
+web: python streamlit_app.py runserver 0.0.0.0:5000
