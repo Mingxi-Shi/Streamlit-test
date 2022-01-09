@@ -6,6 +6,5 @@ django-heroku
 requests
 openpyxl
 xlsxwriter
-io
-from io import BytesIO
-from xlsxwriter import Workbook
+BytesIO
+base64
