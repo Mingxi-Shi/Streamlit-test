@@ -5,7 +5,9 @@ import numpy as np
 from io import BytesIO
 
 
+# 数据处理
 def page1():
+    st.write("This is page1")
     data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'], key='page1_file_upload')
     if data is not None:
         if data.name[-3:] == "csv" or data.name[-3:] == "txt":
@@ -36,6 +38,7 @@ def page1():
                     st.text('')
                     st.text('')
                     st.write(df.head(20))
+
         # 功能1：数据去空（不同条件）
         with st.expander(label="功能1：数据去空（不同条件）", expanded=False):
             with st.container():
@@ -189,12 +192,6 @@ def page1():
                 with p2:
                     st.write(1)
                     st.write(df)
-
-
-
-
-
-
 
         # 功能5：删除用户选定的行或列
         with st.expander(label="功能5：删除用户选定的行或列", expanded=False):
@@ -454,6 +451,18 @@ def convert2excel_df(df):
     writer.save()
     processed_data = output.getvalue()
     return processed_data
+
+
+def convert_df_columns_datatype(df, cols, types):
+    df_columns_name = df.columns.to_list()
+    for i in range(len(cols)):
+        if df[cols[i]].dtype == 'object':
+            if types[i] == 'int64' or types == 'float64':
+                st.write('列 [ ', cols[i], ' ] 不能修改为', types[i], '型')
+                df[cols[i]] = df[cols[i]].astype('string')
+        else:
+            df[cols[i]] = df[cols[i]].astype(types[i])
+    return df
 
 
 def judge_original_datatype(df, i):

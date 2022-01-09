@@ -47,25 +47,20 @@ def main():
     elif menu == "案例展示":
         pageExample()
 
-    # st.sidebar.write(menu1_1)
-
     date = st.sidebar.date_input(
         label="Select a day",
         value=datetime.datetime.now(),
         help="You need to get help?\tContact us")
-    # st.sidebar.write(date)
 
     time = st.sidebar.time_input(
         label="Select an alarm",
         value=datetime.time(8, 00),
         help="You need to get help?\tContact us")
-    # st.sidebar.write(time)
 
     color = st.sidebar.color_picker(
         label="Pick a color",
         value="#00f900",
         help="You need to get help?\tContact us")
-    # st.sidebar.write(color)
 
     st.sidebar.write("BGM func coming soon")
     st.sidebar.button("设置中心")
