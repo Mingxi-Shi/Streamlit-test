@@ -6,7 +6,7 @@ from io import BytesIO
 
 
 def page1():
-    data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'])
+    data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'], key='page1_file_upload')
     if data is not None:
         if data.name[-3:] == "csv" or data.name[-3:] == "txt":
             df = pd.read_csv(data)
@@ -15,19 +15,6 @@ def page1():
             df = pd.read_excel(data)
             st.dataframe(df.head(20))
 
-        st.download_button(label="Download data as CSV",
-                           data=convert2csv_df(df),
-                           file_name='test.csv',
-                           mime='text/csv',
-                           help='click to download the above data as CSV')
-
-        st.download_button(label="Download data as XLSX",
-                           data=convert2excel_df(df),
-                           file_name='test.xlsx',
-                           mime='text/xlsx',
-                           help='click to download the above data as XLSX(one sheet)'
-                           # https://discuss.streamlit.io/t/download-xlsx-file-with-multiple-sheets-in-streamlit/11509/2
-                           )
         st.write("每个功能模块都在container内")
         # 功能0：修改列数据类型
         with st.expander(label="功能0：修改数据类型", expanded=False):
@@ -389,44 +376,64 @@ def page1():
                 st.write(df.describe())
 
 
+# 数据分析
 def page2():
     st.write("This is page2")
+    # st.dataframe(df)
+    data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'], key='page2_file_upload')
+    st.write("功能1：自动根据数据产生几张简单图表（container）")
+    st.write("功能2：用户选择数据交互产生图表（container）")
+    st.write("功能3：生成词云（不同列、行或全局）")
+    st.write("功能4：")
 
 
+# 数据挖掘
 def page3():
     st.write("This is page3")
+    st.write("KNN(container)")
+    st.write("K-mean(container)")
+    st.write("决策树(container)")
+    st.write("线性回归(container)")
 
 
+# 性别分类
 def page4():
     st.write("This is page4")
 
 
+# 密码强度检测
 def page5():
     st.write("This is page5")
 
 
+# 汽车评价
 def page6():
     st.write("This is page6")
 
 
+# 人脸检测
 def page7():
     st.write("This is page7")
 
 
+# 概要和实体检查器
 def page8():
     st.write("This is page8")
 
 
+# NLPiffy
 def page9():
     st.write("This is page9")
 
 
+# 文档编辑
 def page10():
     st.write("This is page10")
 
 
+# 案例展示
 def pageExample():
-    st.write(1)
+    st.write("This is page of example")
 
 
 # 转换格式函数csv
