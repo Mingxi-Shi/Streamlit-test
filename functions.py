@@ -355,26 +355,23 @@ def page1():
         # 功能8：新数据导出
         with st.expander(label="功能8：新数据导出", expanded=False):
             with st.container():
-                p1, p2 = st.columns([1, 1])
-                with p1:
-                    if data is not None:
-                        st.download_button(label="Download data as CSV",
-                                           data=convert2csv_df(df),
-                                           file_name='test.csv',
-                                           mime='text/csv',
-                                           key='download_as_csv',
-                                           help='click to download the above data as CSV'
-                                           )
-                with p2:
-                    if data is not None:
-                        st.download_button(label="Download data as XLSX",
-                                           data=convert2excel_df(df),
-                                           file_name='test.xlsx',
-                                           mime='text/xlsx',
-                                           key='download_as_xlsx',
-                                           help='click to download the above data as XLSX(one sheet)'
-                                           # https://discuss.streamlit.io/t/download-xlsx-file-with-multiple-sheets-in-streamlit/11509/2
-                                           )
+                if data is not None:
+                    st.download_button(label="Download data as CSV",
+                                       data=convert2csv_df(df),
+                                       file_name='test.csv',
+                                       mime='text/csv',
+                                       key='download_as_csv',
+                                       help='click to download the above data as CSV'
+                                       )
+
+                    st.download_button(label="Download data as XLSX",
+                                       data=convert2excel_df(df),
+                                       file_name='test.xlsx',
+                                       mime='text/xlsx',
+                                       key='download_as_xlsx',
+                                       help='click to download the above data as XLSX(one sheet)'
+                                       # https://discuss.streamlit.io/t/download-xlsx-file-with-multiple-sheets-in-streamlit/11509/2
+                                       )
 
         # 功能9：展示各个维度的参数
         with st.expander(label="功能9：展示各个维度的参数", expanded=False):
