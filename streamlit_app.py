@@ -1,54 +1,74 @@
+from functions import *
+
 import streamlit as st
-import pandas as pd
-import base64
-import openpyxl
-from io import BytesIO
-from xlsxwriter import Workbook
-
-# 转换格式函数csv
-def convert2csv_df(df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
-    return df.to_csv().encode('GB2312')
-
-
-# 转换格式函数xlsx
-def convert2excel_df(df):
-    output = BytesIO()
-    writer = pd.ExcelWriter(output, engine='xlsxwriter')
-    df.to_excel(writer, index=False, sheet_name='Sheet1')
-    workbook = writer.book
-    worksheet = writer.sheets['Sheet1']
-    format1 = workbook.add_format({'num_format': '0.00'})
-    worksheet.set_column('A:A', None, format1)
-    writer.save()
-    processed_data = output.getvalue()
-    return processed_data
-
+import datetime
 
 def main():
-    data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'])
-    if data is not None:
-        st.write(data.name)
-        st.write(data.type)
-        if data.name[-3:] == "csv" or data.name[-3:] == "txt":
-            df = pd.read_csv(data)
-            st.dataframe(df)
+    st.set_page_config(page_title="Shi Mingxi\'s Graduation Project",
+                       page_icon=":crown:",
+                       layout="wide",
+                       initial_sidebar_state="auto",
+                       menu_items={'About': None})
 
-        elif data.name[-3:] == "xls" or data.name[-4:] == "xlsx":
-            df = pd.read_excel(data)
-            st.dataframe(df)
-        st.download_button(label="Download data as CSV",
-                       data=convert2csv_df(df),
-                       file_name='test.csv',
-                       mime='text/csv',
-                       help='click to download the above data as CSV')
-        st.download_button(label="Download data as XLSX",
-                       data=convert2excel_df(df),
-                       file_name='test.xlsx',
-                       mime='text/xlsx',
-                       help='click to download the above data as XLSX(one sheet)'
-                       # https://discuss.streamlit.io/t/download-xlsx-file-with-multiple-sheets-in-streamlit/11509/2
-                       )
+    st.sidebar.title("施明希的个人Web")
+    menu = st.sidebar.selectbox('选择业务', ('数据处理和分析', '机器学习', '自然语言处理', '案例展示'))
+    # st.sidebar.write(menu1)
+
+    if menu == "数据处理和分析":
+        menu1_1 = st.sidebar.radio('选择', ('数据处理', '数据分析', '数据挖掘'))
+        if menu1_1 == '数据处理':
+            page1()
+        elif menu1_1 == '数据分析':
+            page2()
+        elif menu1_1 == '数据挖掘':
+            page3()
+
+    elif menu == "机器学习":
+        menu1_1 = st.sidebar.radio('选择', ('性别分类', '密码强度检测', '汽车评价', '人脸检测'))
+        if menu1_1 == '性别分类':
+            page4()
+        elif menu1_1 == '密码强度检测':
+            page5()
+        elif menu1_1 == '汽车评价':
+            page6()
+        elif menu1_1 == '人脸检测':
+            page7()
+
+    elif menu == "自然语言处理":
+        menu1_1 = st.sidebar.radio('选择', ('概要和实体检查器', 'NLPiffy', '文档编辑'))
+        if menu1_1 == '概要和实体检查器':
+            page8()
+        elif menu1_1 == 'NLPiffy':
+            page9()
+        elif menu1_1 == '文档编辑':
+            page10()
+
+    elif menu == "案例展示":
+        pageExample()
+
+    # st.sidebar.write(menu1_1)
+
+    date = st.sidebar.date_input(
+        label="Select a day",
+        value=datetime.datetime.now(),
+        help="You need to get help?\tContact us")
+    # st.sidebar.write(date)
+
+    time = st.sidebar.time_input(
+        label="Select an alarm",
+        value=datetime.time(8, 00),
+        help="You need to get help?\tContact us")
+    # st.sidebar.write(time)
+
+    color = st.sidebar.color_picker(
+        label="Pick a color",
+        value="#00f900",
+        help="You need to get help?\tContact us")
+    # st.sidebar.write(color)
+
+    st.sidebar.write("BGM func coming soon")
+    st.sidebar.button("设置中心")
+    st.sidebar.button("帮助中心")
 
 
 if __name__ == '__main__':
