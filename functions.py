@@ -247,6 +247,110 @@ def page1():
                     if st.button("确认删除列"):
                         df = temp_deleted_columns
                         st.write(df)
+        # 功能6：修改列名或单元内容
+        with st.expander(label="功能6：修改列名或单元内容", expanded=False):
+            with st.container():
+                st.write("功能6：修改列名或单元内容")
+                df_columns_name = df.columns.to_list()
+                modify_way = st.radio(label="选择你要修改的对象", options=('修改列名', '修改单元内容'))
+                if modify_way == '修改列名':
+
+                    selected_modify_col_name = st.selectbox(label='你想要修改哪个列名', options=df_columns_name)
+                    modified_col_temp_name = st.text_input(label='请输入修改后的列名', value=selected_modify_col_name)
+                    st.write('修改后的列名为：', modified_col_temp_name)
+                    modified_temp_df = df.rename(columns={selected_modify_col_name: modified_col_temp_name})
+                    st.write(modified_temp_df.head(5))
+
+                    if st.button("确认修改"):
+                        st.write('success')
+                        df = modified_temp_df
+                        st.write(df.head(5))
+
+                elif modify_way == '修改单元内容':
+                    st.write(2)
+                    selected_modify_row_index = st.number_input(label='输入你要修改的行索引',
+                                                                min_value=0,
+                                                                max_value=df.shape[0] - 1,
+                                                                format='%d')
+                    selected_modify_col_name = st.selectbox(label='选择你要修改单元所在的列', options=df_columns_name)
+                    st.write('你选择的行索引为：', selected_modify_row_index, '你选择的所在列为：', selected_modify_col_name)
+                    st.write('该单元原本的内容为：', df.loc[selected_modify_row_index][selected_modify_col_name])
+                    modified_cell_temp_value = st.text_input(label='请输入修改后的单元内容',
+                                                             value=df.loc[selected_modify_row_index][selected_modify_col_name])
+                    st.write('修改后的单元内容为：', modified_cell_temp_value)
+
+                    modified_temp_df = df
+
+                    if df[selected_modify_col_name].dtype != 'object':
+                        if df.loc[selected_modify_row_index][selected_modify_col_name].dtype == 'int64':
+                            modified_cell_temp_value = int(modified_cell_temp_value)
+                        elif df.loc[selected_modify_row_index][selected_modify_col_name].dtype == 'float64':
+                            modified_cell_temp_value = float(modified_cell_temp_value)
+                        elif df.loc[selected_modify_row_index][selected_modify_col_name].dtype == 'bool':
+                            modified_cell_temp_value = bool(0 if modified_cell_temp_value == 'False' or modified_cell_temp_value == 'false' else 1)
+
+                    modified_temp_df.iloc[int(selected_modify_row_index), df_columns_name.index(
+                        selected_modify_col_name)] = modified_cell_temp_value
+
+                    if st.button("确认修改"):
+                        st.write('success')
+                        df = modified_temp_df
+                        st.write(df)
+
+        # 功能7：查找含有用户输入关键字的行或列
+        with st.expander(label="功能7：查找含有用户输入关键字的行或列", expanded=False):
+            with st.container():
+                st.write("功能7：查找含有用户输入关键字的行或列")
+                df_columns_name = df.columns.to_list()
+                p1, p2 = st.columns([1, 1])
+                with p1:
+                    search_way = st.radio(label='选择查找的方式', options=('根据内容查找对应位置', '根据位置查找对应内容', '根据多列的内容查找对应位置'))
+                    if search_way == '根据内容查找对应位置':
+                        search_type = st.radio(label='选择查找的数据类型', options=('数值型', '字符串型'))
+                        if search_type == '数值型':
+                            search_location = st.number_input(label='输入你要查询的数值内容', value=0)
+                            search_result = search_location_numeric(df, search_location)
+                        elif search_type == '字符串型':
+                            search_location = st.text_input(label='输入你要查询的字符串内容', value=0)
+                            search_result = search_location_string(df, search_location)
+                    elif search_way == '根据位置查找对应内容':
+                        selected_search_column = st.selectbox(label='选择你要查看内容所在的列', options=df_columns_name)
+                        selected_search_row = st.number_input(label='输入你要查看内容所在的行', value=0, max_value=df.shape[0]-1)
+                        search_result = search_value_numeric(df, selected_search_column, selected_search_row)
+                    elif search_way == '根据多列的内容查找对应位置':
+                        selected_search_columns = st.multiselect(label="选择你要查找内容对应的列", options=df_columns_name)
+                        value_columns = [1 for _ in range(len(selected_search_columns))]
+                        for i in range(len(selected_search_columns)):
+                            if df[selected_search_columns[i]].dtype == 'int64':
+                                value_columns[i] = st.number_input(label='请输入【'+selected_search_columns[i]+'】列中的值', value=1)
+                                value_columns[i] = int(value_columns[i])
+                            elif df[selected_search_columns[i]].dtype == 'float64':
+                                value_columns[i] = st.number_input(label='请输入【' + selected_search_columns[i] + '】列中的值', format='%f')
+                                value_columns[i] = float(value_columns[i])
+                            else:
+                                value_columns[i] = st.text_input(label='请输入【'+selected_search_columns[i]+'】列中的值')
+
+                        search_result = search_location_by_columns(df, selected_search_columns, value_columns)
+
+                with p2:
+                    if st.button('开始查找'):
+
+                        if search_way == '根据内容查找对应位置':
+                            for i in range(0, search_result[2]):
+                                st.write('第', i + 1, '次 列：[', search_result[0][i], ']  行：', search_result[1][i])
+                            if search_result[2] == 0:
+                                st.write('抱歉，查找不到。')
+                            st.write('总共出现次数：', search_result[2])
+                        elif search_way == '根据位置查找对应内容':
+                            st.write('列[', selected_search_column, ']，行 ', selected_search_row, '的内容为：', search_result)
+                        elif search_way == '根据多列的内容查找对应位置':
+                            st.write(value_columns)
+                            st.write(search_result)
+                            for i in range(len(search_result)):
+                                st.write('行索引号为', search_result[i], ' 符合查找要求， 其行内容为：')
+                                # st.text(df.loc[search_result[i], df_columns_name])
+                                # st.dataframe(df[search_result[i]:search_result[i]+1])
+                                st.write(df[search_result[i]:search_result[i]+1])
 
 
 def page2():
@@ -400,3 +504,62 @@ def replace_part_single_columns(df, col, to_replace, value):
     df[col] = df[col].str.replace(to_replace, value)
     return df
 
+
+def search_location_numeric(df, value):
+    st.write('success')
+    # col_name, row_index, count
+    df_columns_name = df.columns.to_list()
+    search_result = [[], [], 0]
+    for i in range(0, df.shape[0]):
+        for j in range(0, df.shape[1]):
+            if df.iloc[i][j] == value:
+                search_result[0].append(df_columns_name[j])
+                search_result[1].append(i)
+                search_result[2] = search_result[2] + 1
+    return search_result
+
+
+def search_location_string(df, value):
+    st.write('success')
+    # col_name, row_index, count
+    df_columns_name = df.columns.to_list()
+    search_result = [[], [], 0]
+    for i in range(0, df.shape[0]):
+        for j in range(0, df.shape[1]):
+            if df.iloc[i][j] == value:
+                search_result[0].append(df_columns_name[j])
+                search_result[1].append(i)
+                search_result[2] = search_result[2] + 1
+    return search_result
+
+
+def search_value_numeric(df, col, row):
+    st.write('success')
+    value = df[col][row]
+    return value
+
+
+def search_value_string(df, col, row):
+    st.write('success')
+    value = df[col][row]
+    return value
+
+
+def search_location_by_columns(df, cols, values):
+    index = []
+    for i in range(df.shape[0]):
+        count = 0
+        for j in range(len(cols)):
+
+            if df[cols[j]].dtype == 'bool':
+                if values[j] == 'True' or values[j] == 'true':
+                    values[j] = bool(1)
+                elif values[j] == 'False' or values[j] == 'false':
+                    values[j] = bool(0)
+
+            if df.loc[i][cols[j]] == values[j]:
+                count = count + 1
+
+        if count == len(cols):
+            index.append(i)
+    return index
