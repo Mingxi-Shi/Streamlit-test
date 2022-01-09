@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import base64
+import openpyxl
 
 data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'])
 if data is not None:
@@ -11,5 +13,6 @@ if data is not None:
 
     elif data.name[-3:] == "xls" or data.name[-4:] == "xlsx":
         df = pd.read_excel(data)
+        data = base64.b64encode(data).decode('UTF-8')
         st.dataframe(df)
 
