@@ -1,15 +1,15 @@
 import streamlit as st
+import pandas as pd
 
-st.write("asdsada")
+data = st.file_uploader("上传数据", type=["csv", 'txt', 'xlsx', 'xls'])
+if data is not None:
+    st.write(data.name)
+    st.write(data.type)
+    if data.name[-3:] == "csv" or data.name[-3:] == "txt":
+        df = pd.read_csv(data)
+        st.dataframe(df)
 
-vid_file1 = open("./vedio/7.mp4", "rb").read()
-st.video(vid_file1)
+    elif data.name[-3:] == "xls" or data.name[-4:] == "xlsx":
+        df = pd.read_excel(data)
+        st.dataframe(df)
 
-vid_file2 = open("./vedio/star.mp4", "rb").read()
-st.video(vid_file2)
-
-audio_file1 = open("./music/稻香-周杰伦.mp3", "rb").read()
-st.audio(audio_file1, format='audio/mp3', start_time=0)
-
-audio_file2 = open("./music/七里香-周杰伦.mp3", "rb").read()
-st.audio(audio_file2, format='audio/mp3', start_time=0)
