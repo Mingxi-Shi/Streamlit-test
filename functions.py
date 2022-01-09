@@ -353,6 +353,22 @@ def page1():
                                 st.write(df[search_result[i]:search_result[i]+1])
 
 
+        # 功能9：展示各个维度的参数
+        with st.expander(label="功能9：展示各个维度的参数", expanded=False):
+            if st.checkbox("Show Shape"):
+                st.write(df.shape)
+            if st.checkbox("Show Columns"):
+                # df_columns_name = df.columns.to_list()
+                st.write(df_columns_name)
+            if st.checkbox("Select Columns To Show"):
+                selected_columns = st.multiselect("Selected Columns", df_columns_name)
+                new_df = df[selected_columns]
+                if not new_df.empty:
+                    st.dataframe(new_df)
+            if st.checkbox("Show Summary"):
+                st.write(df.describe())
+
+
 def page2():
     st.write("This is page2")
 
