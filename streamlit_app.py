@@ -3,6 +3,7 @@ from functions import *
 import streamlit as st
 import datetime
 
+
 def main():
     st.set_page_config(page_title="Shi Mingxi\'s Graduation Project",
                        page_icon=":crown:",
