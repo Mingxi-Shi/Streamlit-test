@@ -1,6 +1,8 @@
-from io import BytesIO
 import streamlit as st
+
 import pandas as pd
+import numpy as np
+from io import BytesIO
 
 
 def page1():
@@ -8,10 +10,10 @@ def page1():
     if data is not None:
         if data.name[-3:] == "csv" or data.name[-3:] == "txt":
             df = pd.read_csv(data)
-            st.dataframe(df)
+            st.dataframe(df.head(20))
         elif data.name[-3:] == "xls" or data.name[-4:] == "xlsx":
             df = pd.read_excel(data)
-            st.dataframe(df)
+            st.dataframe(df.head(20))
 
         st.download_button(label="Download data as CSV",
                            data=convert2csv_df(df),
@@ -47,6 +49,20 @@ def page1():
                     st.text('')
                     st.text('')
                     st.write(df.head(20))
+        # 功能1：数据去空（不同条件）
+        with st.expander(label="功能1：数据去空（不同条件）", expanded=False):
+            with st.container():
+                drop_na_row = st.radio(label="选择你要去空的方式", options=('去空(by row & any)', '去空(by row & all)'))
+                if drop_na_row == '去空(by row & any)':
+                    temp_na = drop_na_any(df)
+                    st.write(temp_na)
+                elif drop_na_row == '去空(by row & all)':
+                    temp_na = drop_na_all(df)
+                    st.write(temp_na)
+
+                if st.button("确认去空"):
+                    df = temp_na
+                    st.write(df)
 
 
 def page2():
@@ -133,3 +149,16 @@ def convert_df_columns_datatype(df, cols, types):
         else:
             df[cols[i]] = df[cols[i]].astype(types[i])
     return df
+
+
+def drop_na_any(df):
+    st.write('success')
+    df = df.dropna(axis=0, how='any', subset=list(df.keys()))
+    return df
+
+
+def drop_na_all(df):
+    st.write('success')
+    df = df.dropna(axis=0, how='all', subset=list(df.keys()))
+    return df
+
