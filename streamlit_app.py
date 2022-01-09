@@ -6,14 +6,12 @@ from io import BytesIO
 from xlsxwriter import Workbook
 
 # 转换格式函数csv
-@st.cache
 def convert2csv_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return df.to_csv().encode('GB2312')
 
 
 # 转换格式函数xlsx
-@st.cache
 def convert2excel_df(df):
     output = BytesIO()
     writer = pd.ExcelWriter(output, engine='xlsxwriter')
@@ -39,12 +37,12 @@ def main():
         elif data.name[-3:] == "xls" or data.name[-4:] == "xlsx":
             df = pd.read_excel(data)
             st.dataframe(df)
-    st.download_button(label="Download data as CSV",
+        st.download_button(label="Download data as CSV",
                        data=convert2csv_df(df),
                        file_name='test.csv',
                        mime='text/csv',
                        help='click to download the above data as CSV')
-    st.download_button(label="Download data as XLSX",
+        st.download_button(label="Download data as XLSX",
                        data=convert2excel_df(df),
                        file_name='test.xlsx',
                        mime='text/xlsx',
