@@ -2,3 +2,6 @@ streamlit
 pythonping
 tcping
 
+office
+PIL
+qrcode
