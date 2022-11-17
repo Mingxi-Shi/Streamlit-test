@@ -1,8 +1,0 @@
-streamlit
-streamlit_elements
-streamlit_tree_select
-passwordstrength.
-pyperclip
-pdfplumber
-pandas
-pythonping
