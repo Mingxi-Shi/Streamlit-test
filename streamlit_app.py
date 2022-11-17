@@ -1,7 +1,14 @@
 import streamlit as st
 
 def main():
-    st.write(1)
+    st.set_page_config(page_title="工具合集", page_icon="🌏", layout="wide")
+
+    sysmenu = '''
+       <style>
+       #MainMenu {visibility:hidden;}
+       footer {visibility:hidden;}
+       '''
+    st.markdown(sysmenu, unsafe_allow_html=True)
    
 if __name__ == '__main__':
     main()
