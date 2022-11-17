@@ -32,9 +32,9 @@ def main():
     max_num = st.number_input(label='最大数', value=100)
     whether_unique = st.selectbox(label='选择是否为唯一随机数：', options=('唯一', '随便'))
     generate = st.button(label='点击生成')
-
-    result = gen_random_number(amount, min_num, max_num, whether_unique)
-    st.text(result)
+    if generate:
+        result = gen_random_number(amount, min_num, max_num, whether_unique)
+        st.text(result)
 
 
 if __name__ == '__main__':
