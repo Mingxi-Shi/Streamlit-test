@@ -1,5 +1,3 @@
-import streamlit as st
-
 from pythonping import ping
 import streamlit as st
 
