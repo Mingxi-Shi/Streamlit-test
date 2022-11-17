@@ -1,6 +1,4 @@
-
-streamlit==1.14.0
-
+streamlit
 streamlit_elements
 streamlit_tree_select
 passwordstrength.
