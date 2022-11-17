@@ -1,7 +1,6 @@
 import streamlit as st
 
 import passwordstrength.passwordmeter
-import pyperclip
 import string
 import random
 
@@ -53,9 +52,7 @@ def main():
             if st.button("开始生成"):
                 custom_password = password_gen(pwd_length, is_have_uppercase, is_have_lowercase, is_have_digit,
                                                is_have_punctuation)
-                pyperclip.copy(custom_password)
                 st.write(custom_password)
-                st.write("已自动复制至粘贴板")
 
     elif choice == "Password Strength Classifier":
         st.subheader("Classifying Password with ML")
