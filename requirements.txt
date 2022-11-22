@@ -1,3 +1,5 @@
 streamlit
 passwordstrength
 translate
+Faker
+pandas
