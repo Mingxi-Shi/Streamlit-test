@@ -3,3 +3,4 @@ passwordstrength
 translate
 Faker
 pandas
+xlsxwriter 
