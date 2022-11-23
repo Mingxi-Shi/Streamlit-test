@@ -7,7 +7,6 @@ from io import BytesIO
 import random
 
 
-
 timestr = time.strftime("%Y%m%d-%H%M%S")
 
 
@@ -57,9 +56,6 @@ def generate_customized_profile(number, locale, fields, random_seed=200):
     data = [custom_fake.profile(fields=fields) for i in range(number)]
     df = pd.DataFrame(data)
     return df
-
-
-
 
 
 def main():

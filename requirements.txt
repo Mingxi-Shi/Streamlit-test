@@ -3,4 +3,7 @@ passwordstrength
 translate
 Faker
 pandas
+numpy
+opencv-python-headless
+Pillow
 xlsxwriter
