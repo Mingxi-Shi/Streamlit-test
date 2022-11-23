@@ -86,7 +86,7 @@ def main():
 
         generate_data_index_button = st.sidebar.button(label="生成")
         if generate_data_index_button:
-            Faker.seed(random.randint(1,1000))
+            Faker.seed(random.randint(1, 1000))
 
             if fake_data_type == "地址":
                 st.write("地址：", index_fake.address())
