@@ -132,7 +132,7 @@ def main():
                 st.write("公司名称后缀：", index_fake.company_suffix())
 
             elif fake_data_type == "信用卡":
-                st.write("过期年月：", index_fake.credit_card_expire(start="now", end="+10y", date_format="%m/%y")())
+                st.write("过期年月：", index_fake.credit_card_expire(start="now", end="+10y", date_format="%m/%y"))
                 st.write("完整信用卡信息：", index_fake.credit_card_full(card_type=None))
                 st.write("信用卡卡号：", index_fake.credit_card_number(card_type=None))
                 st.write("信用卡提供商：", index_fake.credit_card_provider(card_type=None))
@@ -243,7 +243,7 @@ def main():
                 st.write("多个文本：", index_fake.texts(nb_texts=3, max_nb_chars=200, ext_word_list=None))
                 st.write("单个词语：", index_fake.word(ext_word_list=None))
                 st.write("多个词语：", index_fake.words(nb=3, ext_word_list=None, unique=False))
-                st.write(1)
+
             elif fake_data_type == "编码":
                 st.write("二进制：", index_fake.binary(length=1024))
                 st.write("布尔值：", index_fake.boolean(chance_of_getting_true=50))
