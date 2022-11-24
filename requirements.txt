@@ -9,3 +9,4 @@ Pillow
 xlsxwriter
 chardet
 baidu-aip
+streamlit-cropper
