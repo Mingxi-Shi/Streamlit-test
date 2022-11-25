@@ -13,3 +13,4 @@ streamlit-cropper
 jieba
 wordcloud
 matplotlib
+streamlit_echarts
