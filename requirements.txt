@@ -10,3 +10,6 @@ xlsxwriter
 chardet
 baidu-aip
 streamlit-cropper
+jieba
+wordcloud
+matplotlib

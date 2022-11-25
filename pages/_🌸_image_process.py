@@ -6,7 +6,7 @@ import io
 import streamlit as st
 import cv2
 import numpy as np
-from PIL import Image, ImageEnhance
+from PIL import Image, ImageEnhance, ImageDraw, ImageFont
 from aip import AipImageProcess
 from streamlit_cropper import st_cropper
 
@@ -53,7 +53,7 @@ def main():
 
     img_file = st.sidebar.file_uploader(label='上传图片', type=['png', 'jpg'])
 
-    selected_model = st.sidebar.selectbox(label="选择模块", options=['图像裁剪', '图像特效', '图像增强'], label_visibility="collapsed")
+    selected_model = st.sidebar.selectbox(label="选择模块", options=['图像裁剪', '图像特效', '图像增强', '图像水印'], label_visibility="collapsed")
 
     if selected_model == "图像裁剪":
         realtime_update = st.sidebar.checkbox(label="Update in Real Time", value=True)
@@ -181,15 +181,61 @@ def main():
                 # res_image = client.inpaintingByMask(image=img.getvalue(), rectangle=rectangle,options=None)
                 #
                 # st.image(base64.b64decode(res_image['image']))
-                st.write(1)
+                st.write("working...")
 
             elif selected_func_2 == "图像清晰度增强":
                 res_image = client.imageDefinitionEnhance(image=img_file.getvalue())
                 st.image(base64.b64decode(res_image['image']))
 
             elif selected_func_2 == "天空分割":
-                res_image = client.skySeg(image=img_file.getvalue())
-                st.image(base64.b64decode(res_image['image']))
+                st.write("working...")
+                # res_image = client.skySeg(image=img_file.getvalue())
+                # st.image(base64.b64decode(res_image['image']))
+
+    if selected_model == "图像水印":
+        marker_type = st.sidebar.radio(label="水印类型", options=['文字水印', '图片logo'], label_visibility="collapsed")
+        if marker_type == "文字水印":
+            if img_file:
+                img = Image.open(img_file)
+                col1, col2 = st.sidebar.columns([1, 1])
+                with col1:
+                    b = st.slider(label="x", min_value=1, max_value=img.size[0], value=img.size[0]-200, label_visibility="collapsed")
+                with col2:
+                    c = st.slider(label="y", min_value=1, max_value=img.size[1], value=img.size[1]-100, label_visibility="collapsed")
+                col3, col4 = st.sidebar.columns([6, 1])
+                with col3:
+                    a = st.text_input(label="添加文字")
+                with col4:
+                    d = st.color_picker(label="颜色", value="#1687E2")
+                draw = ImageDraw.Draw(img)
+                font = ImageFont.truetype(font="./data/宋体.ttc", size=50)
+                draw.text((b, c), text=a, fill=d, font=font)
+                st.image(img)
+
+        elif marker_type == "图片logo":
+            if img_file:
+                img = Image.open(img_file)
+                col1, col2 = st.sidebar.columns([1, 1])
+                with col1:
+                    logo_file = st.file_uploader(label="上传logo", type=(['png']))
+                with col2:
+                    if logo_file:
+                        logo = Image.open(logo_file)
+                        logo_size_x = st.slider(label="size_x", min_value=1, max_value=logo.size[0], value=50, label_visibility="collapsed")
+                        logo_size_y = st.slider(label="size_y", min_value=1, max_value=logo.size[1], value=50, label_visibility="collapsed")
+                        logo_pos_x = st.slider(label="pos_x", min_value=1, max_value=img.size[0], value=img.size[0]-100, label_visibility="collapsed")
+                        logo_pos_y = st.slider(label="pos_y", min_value=1, max_value=img.size[1], value=img.size[1]-100, label_visibility="collapsed")
+
+                if logo_file:
+                    logo = logo.resize((logo_size_x, logo_size_y))
+                    t = Image.new(mode='RGBA', size=img.size, color=0)
+                    t.paste(img)
+                    lg_pos = (logo_pos_x, logo_pos_y)
+                    t.paste(im=logo, box=lg_pos, mask=logo)
+                    st.image(t)
+
+
+
 
 
 if __name__ == '__main__':
