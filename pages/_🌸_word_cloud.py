@@ -21,6 +21,16 @@ def remove_stopwords(words):
 
 
 def main():
+    st.set_page_config(page_title="词云图", page_icon="🌸", layout="wide")
+
+    sysmenu = '''
+                      <style>
+                      #MainMenu {visibility:hidden;}
+                      footer {visibility:hidden;}
+                      '''
+    st.markdown(sysmenu, unsafe_allow_html=True)
+
+
     colormap_list = ['Accent', 'Accent_r', 'Blues', 'Blues_r', 'BrBG', 'BrBG_r', 'BuGn', 'BuGn_r', 'BuPu',
                      'BuPu_r', 'CMRmap', 'CMRmap_r', 'Dark2', 'Dark2_r', 'GnBu', 'GnBu_r', 'Greens', 'Greens_r',
                      'Greys', 'Greys_r', 'OrRd', 'OrRd_r', 'Oranges', 'Oranges_r', 'PRGn', 'PRGn_r', 'Paired',

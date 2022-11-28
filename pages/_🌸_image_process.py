@@ -208,7 +208,7 @@ def main():
                 with col4:
                     d = st.color_picker(label="颜色", value="#1687E2")
                 draw = ImageDraw.Draw(img)
-                font = ImageFont.truetype(font="./data/宋体.ttc", size=50)
+                font = ImageFont.truetype(font="./resources/fonts/宋体.ttc", size=50)
                 draw.text((b, c), text=a, fill=d, font=font)
                 st.image(img)
 
@@ -233,9 +233,6 @@ def main():
                     lg_pos = (logo_pos_x, logo_pos_y)
                     t.paste(im=logo, box=lg_pos, mask=logo)
                     st.image(t)
-
-
-
 
 
 if __name__ == '__main__':

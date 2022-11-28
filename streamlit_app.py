@@ -3,7 +3,7 @@ import streamlit as st
 
 def main():
     st.set_page_config(page_title="Muench\'s Tools Page",
-                       page_icon="💎",
+                       page_icon="🐯",
                        layout="wide",
                        initial_sidebar_state="auto",
                        menu_items={'About': None}
