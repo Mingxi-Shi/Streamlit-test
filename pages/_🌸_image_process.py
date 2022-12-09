@@ -9,6 +9,7 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageDraw, ImageFont
 from aip import AipImageProcess
 from streamlit_cropper import st_cropper
+from rembg import remove
 
 
 def cartonize_image(original_image):
@@ -53,7 +54,7 @@ def main():
 
     img_file = st.sidebar.file_uploader(label='上传图片', type=['png', 'jpg'])
 
-    selected_model = st.sidebar.selectbox(label="选择模块", options=['图像裁剪', '图像特效', '图像增强', '图像水印'], label_visibility="collapsed")
+    selected_model = st.sidebar.selectbox(label="选择模块", options=['图像裁剪', '图像抠图', '图像压缩', '图像特效', '图像增强', '图像水印'], label_visibility="collapsed")
 
     if selected_model == "图像裁剪":
         realtime_update = st.sidebar.checkbox(label="Update in Real Time", value=True)
@@ -84,6 +85,16 @@ def main():
             st.write("Preview")
             _ = cropped_img.thumbnail((150, 150))
             st.image(cropped_img)
+    elif selected_model == "图像抠图":
+        if img_file:
+            img = Image.open(img_file)
+            output = remove(img)
+            st.image(output)
+
+
+    elif selected_model == "图像压缩":
+        st.write(1)
+    # https://blog.csdn.net/Rebacca122222/article/details/124918529
 
     elif selected_model == "图像特效":
         func_list_1 = ["黑白图像上色", "图像风格转换", "人像动漫化", "卡通化", "黑白简体化"]

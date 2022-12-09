@@ -15,3 +15,5 @@ wordcloud
 matplotlib
 streamlit_echarts
 cryptography
+pyodbc==4.0.35
+rembg
