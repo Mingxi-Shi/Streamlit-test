@@ -12,7 +12,7 @@ def main():
                       '''
     st.markdown(sysmenu, unsafe_allow_html=True)
 
-    df = pd.read_excel('resources/emoji/emoji.xlsx')
+    df = pd.read_excel('./resources/emoji/emoji.xlsx')
 
     st.table(df)
 
