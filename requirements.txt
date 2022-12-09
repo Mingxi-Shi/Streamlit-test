@@ -17,8 +17,5 @@ streamlit_echarts
 cryptography
 pyodbc==4.0.35
 rembg
-<<<<<<< HEAD
 openpyxl
-=======
-openpyxl
->>>>>>> 607cded632f931b922c9b1f0e15ddd2a0ccbd0a6
+
