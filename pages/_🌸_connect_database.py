@@ -40,7 +40,7 @@ def check_password():
 
 
 def main():
-    print(1)
+
     st.write(1)
     st.write(2)
     # https://docs.streamlit.io/knowledge-base/tutorials/databases/mssql

@@ -6,10 +6,57 @@ import io
 import streamlit as st
 import cv2
 import numpy as np
-from PIL import Image, ImageEnhance, ImageDraw, ImageFont
+from PIL import Image, ImageEnhance, ImageDraw, ImageFont, ImageFilter, ImageOps
 from aip import AipImageProcess
 from streamlit_cropper import st_cropper
 from rembg import remove
+
+
+def fill_image(image):
+    width, height = image.size
+    new_image_length = width if width > height else height
+    new_image = Image.new(image.mode, (new_image_length, new_image_length), color='white')
+
+    if width > height:
+        new_image.paste(image, (0, int((new_image_length - height) / 2)))
+    else:
+        new_image.paste(image, (int((new_image_length - width) / 2), 0))
+
+    return new_image
+
+
+def cut_image(image):
+    width, height = image.size
+    item_width = int(width / 3)
+    box_list = []
+    for i in range(0, 3):
+        for j in range(0, 3):
+            box = (j*item_width, i*item_width, (j+1)*item_width, (i+1)*item_width)
+            box_list.append(box)
+    image_list = [image.crop(box) for box in box_list]
+
+    return image_list
+
+
+def dodge(a, b, alpha):
+    return min(int(a*255/(256-b*alpha)),255)
+
+
+def sketch_image(img, blur=26, alpha=1.0):
+    img1 = img.convert('L') #图片转换成灰色
+    img2 = img1.copy() #复制图片
+    img2 = ImageOps.invert(img2) #实现二值图像的黑白翻转
+    for i in range(blur): # blur模糊度
+        img2 = img2.filter(ImageFilter.BLUR) #ImageFilter.BLUR为模糊滤波，处理之后的图像会整体变得模糊。
+                                               #ImageFilter.CONTOUR为轮廓滤波，将图像中的轮廓信息全部提取出来。
+    width, height = img1.size
+    for x in range(width):
+        for y in range( height) :
+            a = img1.getpixel((x, y))
+            b = img2.getpixel((x, y))
+            img1.putpixel((x, y), dodge(a, b, alpha)) #在指定位置上放一像素
+
+    return img1
 
 
 def cartonize_image(original_image):
@@ -58,33 +105,64 @@ def main():
 
     if selected_model == "图像裁剪":
         realtime_update = st.sidebar.checkbox(label="Update in Real Time", value=True)
-        aspect_choice = st.sidebar.radio(label="纵横比", options=["1:1", "16:9", "4:3", "2:3", "自定义"])
-        aspect_dict = {
-            "1:1": (1, 1),
-            "16:9": (16, 9),
-            "4:3": (4, 3),
-            "2:3": (2, 3),
-            "自定义": None
-        }
-        aspect_ratio = aspect_dict[aspect_choice]
+        aspect_choice = st.sidebar.radio(label="纵横比", options=["1:1", "16:9", "4:3", "2:3", "自定义", "九宫格"])
 
-        if img_file:
-            img = Image.open(img_file)
+        if aspect_choice == "九宫格":
+            if img_file:
+                img = Image.open(img_file)
+                image = fill_image(img)
+                image_list = cut_image(image)
+                c1r1, c2r1, c3r1, c4r1 = st.columns([1, 1, 1, 5])
+                with c1r1:
+                    st.image(image_list[0])
+                with c2r1:
+                    st.image(image_list[1])
+                with c3r1:
+                    st.image(image_list[2])
 
-            if not realtime_update:
-                st.write("Double click to save crop")
-            # Get a cropped image from the frontend
-            cropped_img = st_cropper(
-                img,
-                realtime_update=realtime_update,
-                aspect_ratio=aspect_ratio,
-                return_type='image'
-            )
+                c1r2, c2r2, c3r2, c4r2 = st.columns([1, 1, 1, 5])
+                with c1r2:
+                    st.image(image_list[3])
+                with c2r2:
+                    st.image(image_list[4])
+                with c3r2:
+                    st.image(image_list[5])
+                c1r3, c2r3, c3r3, c4r3 = st.columns([1, 1, 1, 5])
+                with c1r3:
+                    st.image(image_list[6])
+                with c2r3:
+                    st.image(image_list[7])
+                with c3r3:
+                    st.image(image_list[8])
 
-            # Manipulate cropped image at will
-            st.write("Preview")
-            _ = cropped_img.thumbnail((150, 150))
-            st.image(cropped_img)
+        else:
+            aspect_dict = {
+                "1:1": (1, 1),
+                "16:9": (16, 9),
+                "4:3": (4, 3),
+                "2:3": (2, 3),
+                "自定义": None
+            }
+            aspect_ratio = aspect_dict[aspect_choice]
+
+            if img_file:
+                img = Image.open(img_file)
+
+                if not realtime_update:
+                    st.write("Double click to save crop")
+                # Get a cropped image from the frontend
+                cropped_img = st_cropper(
+                    img,
+                    realtime_update=realtime_update,
+                    aspect_ratio=aspect_ratio,
+                    return_type='image'
+                )
+
+                # Manipulate cropped image at will
+                st.write("Preview")
+                _ = cropped_img.thumbnail((150, 150))
+                st.image(cropped_img)
+
     elif selected_model == "图像抠图":
         if img_file:
             img = Image.open(img_file)
@@ -97,7 +175,7 @@ def main():
     # https://blog.csdn.net/Rebacca122222/article/details/124918529
 
     elif selected_model == "图像特效":
-        func_list_1 = ["黑白图像上色", "图像风格转换", "人像动漫化", "卡通化", "黑白简体化"]
+        func_list_1 = ["黑白图像上色", "图像风格转换", "人像动漫化", "卡通化", "黑白简体化", "素描画"]
         selected_func_1 = st.sidebar.selectbox(label="选择功能", options=func_list_1, label_visibility="collapsed")
 
         if img_file:
@@ -132,6 +210,12 @@ def main():
                 original_image = Image.open(img_file)
                 res_image = cannize_image(original_image)
                 st.image(res_image)
+
+            elif selected_func_1 == "素描画":
+                original_image = Image.open(img_file)
+                res_image = sketch_image(original_image)
+                st.image(res_image)
+
 
     elif selected_model == "图像增强":
         func_list_2 = ["灰度", "对比度", "亮度", "模糊度", "图像去雾", "图像对比度增强", "图像无损放大", "拉伸图像恢复", "图像修复", "图像清晰度增强", "天空分割"]
