@@ -10,7 +10,6 @@ def main():
                        )
     st.set_option('deprecation.showPyplotGlobalUse', False)
 
-
     # hide_menu_style = """
     #                 <style>
     #                 #MainMenu {visibility: hidden;}
