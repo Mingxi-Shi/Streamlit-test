@@ -1,4 +1,4 @@
-streamlit==1.16.0
+streamlit
 passwordstrength
 translate
 Faker
@@ -12,7 +12,6 @@ baidu-aip
 streamlit-cropper
 jieba
 wordcloud
-matplotlib
 streamlit_echarts
 cryptography
 pyodbc==4.0.35
