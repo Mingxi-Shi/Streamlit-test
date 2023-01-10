@@ -9,6 +9,7 @@ Pillow
 xlsxwriter
 chardet
 baidu-aip
+matplotlib
 streamlit-cropper
 jieba
 wordcloud
