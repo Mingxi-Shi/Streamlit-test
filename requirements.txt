@@ -1,4 +1,23 @@
 streamlit==1.16.0
+passwordstrength
+translate
+Faker
+pandas
+numpy
+opencv-python-headless
+Pillow
+xlsxwriter
+chardet
+baidu-aip
+streamlit-cropper
+jieba
+wordcloud
+matplotlib
+streamlit_echarts
+cryptography
+pyodbc==4.0.35
+rembg
+openpyxl
 
 
 
