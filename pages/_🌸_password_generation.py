@@ -14,7 +14,7 @@ def password_gen(length, uppercase, lowercase, digit, punctuation):
     if digit:
         characters += string.digits
     if punctuation:
-        characters += string.punctuation
+        characters += string.punctuation[9:15]
     # characters = string.digits + string.ascii_letters + string.punctuation
     generated_pswd = "".join(random.choice(characters) for x in range(length))
     return generated_pswd
@@ -46,7 +46,8 @@ def main():
         with col3:
             is_have_digit = st.checkbox(label="0123456789")
         with col4:
-            is_have_punctuation = st.checkbox(label="!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~")
+            # is_have_punctuation = st.checkbox(label="!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~")
+            is_have_punctuation = st.checkbox(label="*+,-./")
 
         if is_have_uppercase or is_have_lowercase or is_have_digit or is_have_punctuation:
             if st.button("开始生成"):
