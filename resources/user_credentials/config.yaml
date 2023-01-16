@@ -1,0 +1,13 @@
+cookie:
+  expiry_days: 30
+  key: random_signature_key
+  name: random_cookie_name
+credentials:
+  usernames:
+    muenchshi:
+      email: muenchshi@gmail.com
+      name: Muench Shi
+      password: $2b$12$DAfMD3B6LRrFJnWkRdPNWunKOAurwWFAdpFuVNugej2khwq.Ako6u
+preauthorized:
+  emails:
+  - muenchshi@gmail.com

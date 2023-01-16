@@ -39,6 +39,14 @@ def decrypt(ciphertext, private_key):
 
 
 def main():
+    st.set_page_config(page_title="文本加密解密", page_icon="🌸", layout="wide")
+
+    sysmenu = '''
+            <style>
+            #MainMenu {visibility:hidden;}
+            footer {visibility:hidden;}
+            '''
+    st.markdown(sysmenu, unsafe_allow_html=True)
 
     plaintext = st.text_input(label="输入明文")
     public_key = st.text_input(label="输入公钥")

@@ -19,6 +19,11 @@ pyodbc==4.0.35
 rembg
 openpyxl
 pycryptodome
+streamlit-authenticator
+PyJWT
+bcrypt
+PyYAML
+extra-streamlit-components
 
 
 
