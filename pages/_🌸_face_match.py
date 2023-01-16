@@ -42,8 +42,10 @@ def main():
                 [{'image': image1_bytes, 'image_type': 'BASE64'}, {'image': image2_bytes, 'image_type': 'BASE64'}])
             if result["error_msg"] == "SUCCESS" and result["result"]["score"] > 50:
                 st.success("人脸比对分数:" + str(result["result"]["score"]))
-            else:
+            elif result["error_msg"] == "SUCCESS" and result["result"]["score"] < 50:
                 st.error("人脸比对分数:" + str(result["result"]["score"]))
+            else:
+                st.info("人脸比对未成功（可能其中一个无人脸信息）")
 
     elif selected_model == "图片和摄像头":
 
@@ -64,8 +66,10 @@ def main():
                 [{'image': image1_bytes, 'image_type': 'BASE64'}, {'image': image2_bytes, 'image_type': 'BASE64'}])
             if result["error_msg"] == "SUCCESS" and result["result"]["score"] > 50:
                 st.success("人脸比对分数:" + str(result["result"]["score"]))
-            else:
+            elif result["error_msg"] == "SUCCESS" and result["result"]["score"] < 50:
                 st.error("人脸比对分数:" + str(result["result"]["score"]))
+            else:
+                st.info("人脸比对未成功（可能其中一个无人脸信息）")
 
 
 if __name__ == '__main__':
